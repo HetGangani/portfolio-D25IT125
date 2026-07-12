@@ -1,0 +1,89 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #121212;
+    color: #f5f5f5;
+}
+
+/* Main Container */
+.app {
+    width: 80%;
+    max-width: 850px;
+    margin: 40px auto;
+    background-color: #1e1e1e;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Header */
+.header {
+    text-align: center;
+    border-bottom: 2px solid #3b82f6;
+    padding-bottom: 20px;
+}
+
+.header h1 {
+    color: #60a5fa;
+    font-size: 2.2rem;
+    margin-bottom: 8px;
+}
+
+.header h2 {
+    color: #d1d5db;
+    font-weight: normal;
+}
+
+/* About */
+.about {
+    margin-top: 30px;
+}
+
+.about h2 {
+    color: #60a5fa;
+    margin-bottom: 10px;
+}
+
+.about p {
+    line-height: 1.8;
+    color: #d1d5db;
+}
+
+/* Skills */
+.skills {
+    margin-top: 30px;
+}
+
+.skills h2 {
+    color: #60a5fa;
+    margin-bottom: 10px;
+}
+
+.skills ul {
+    padding-left: 20px;
+}
+
+.skills li {
+    margin-bottom: 8px;
+    color: #e5e7eb;
+}
+
+/* Footer */
+.footer {
+    margin-top: 35px;
+    border-top: 2px solid #3b82f6;
+    padding-top: 20px;
+    text-align: center;
+    color: #9ca3af;
+}
+
+.footer p:first-child {
+    margin-bottom: 8px;
+}
