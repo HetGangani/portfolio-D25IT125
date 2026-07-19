@@ -1,89 +1,223 @@
-/* Reset */
+/* General Styling */
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-/* Body */
 body {
-    font-family: Arial, Helvetica, sans-serif;
     background-color: #121212;
     color: #f5f5f5;
 }
 
-/* Main Container */
-.app {
-    width: 80%;
-    max-width: 850px;
-    margin: 40px auto;
+/* Main Styling */
+main {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+/* Section Styling */
+section {
+    margin-bottom: 50px;
+}
+
+section h2 {
+    font-size: 2rem;
+    color: #4f8cff;
+    margin-bottom: 20px;
+    border-left: 5px solid #4f8cff;
+    padding-left: 12px;
+}
+
+section p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    text-align: justify;
+    color: #ddd;
+}
+
+/* Navbar */
+
+.navbar {
     background-color: #1e1e1e;
-    border-radius: 10px;
-    padding: 30px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #3b82f6;
+}
+
+.logo {
+    color: #60a5fa;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #60a5fa;
+}
+
+/* Page Container */
+
+.page {
+    width: 80%;
+    max-width: 900px;
+    margin: 40px auto;
+    background: #1e1e1e;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0,0,0,0.4);
+}
+
+.page h1 {
+    color: #60a5fa;
+    margin-bottom: 20px;
+}
+
+.page h3 {
+    color: #60a5fa;
+    margin-bottom: 15px;
+    margin-top: 20px;
 }
 
 /* Header */
+
 .header {
     text-align: center;
-    border-bottom: 2px solid #3b82f6;
-    padding-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .header h1 {
     color: #60a5fa;
-    font-size: 2.2rem;
-    margin-bottom: 8px;
 }
 
 .header h2 {
-    color: #d1d5db;
-    font-weight: normal;
+    margin-top: 10px;
 }
 
 /* About */
-.about {
-    margin-top: 30px;
-}
 
-.about h2 {
-    color: #60a5fa;
-    margin-bottom: 10px;
+.about {
+    margin-top: 25px;
 }
 
 .about p {
+    margin-top: 10px;
     line-height: 1.8;
-    color: #d1d5db;
 }
 
 /* Skills */
+
+.skills-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 15px;
+    list-style: none;
+    padding: 0;
+    margin-top: 20px;
+}
+
+.skills-list li {
+    background: #1e1e1e;
+    padding: 15px 20px;
+    border-radius: 10px;
+    border-left: 4px solid #4f8cff;
+    font-size: 1.1rem;
+    transition: 0.3s;
+}
+
+.skills-list:hover {
+    transform: translateX(5px);
+    background: #2b2b2b;
+}
+
 .skills {
     margin-top: 30px;
 }
 
-.skills h2 {
-    color: #60a5fa;
-    margin-bottom: 10px;
-}
-
 .skills ul {
+    margin-top: 15px;
     padding-left: 20px;
 }
 
 .skills li {
-    margin-bottom: 8px;
-    color: #e5e7eb;
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #1d4ed8;
+}
+
+/* Form */
+
+form {
+    margin-top: 20px;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    background: #2b2b2b;
+    color: white;
+    border: 1px solid #555;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: #60a5fa;
+}
+
+/* Projects */
+
+.project-list ul {
+    margin-top: 15px;
+    padding-left: 20px;
+}
+
+.project-list li {
+    margin-bottom: 12px;
 }
 
 /* Footer */
-.footer {
-    margin-top: 35px;
-    border-top: 2px solid #3b82f6;
-    padding-top: 20px;
-    text-align: center;
-    color: #9ca3af;
-}
 
-.footer p:first-child {
-    margin-bottom: 8px;
+.footer {
+    text-align: center;
+    margin-top: 35px;
+    border-top: 1px solid #444;
+    padding-top: 20px;
+    color: #bdbdbd;
 }
