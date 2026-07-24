@@ -8,8 +8,57 @@
 }
 
 body {
-    background-color: #121212;
-    color: #f5f5f5;
+    margin: 0;
+}
+
+.dark-theme .page{
+    background: #1e1e1e;
+}
+
+.light-theme .page{
+    background: #f5f5f5;
+}
+
+.dark-theme .navbar{
+    background-color: #1e1e1e;
+}
+
+.light-theme .navbar{
+    background-color: #f5f5f5;
+}
+
+.light-theme .nav-links a{
+    color: #222;
+}
+
+.light-theme .logo{
+    color: #2563eb;
+}
+
+.light-theme input, .light-theme textarea{
+    background: #f5f5f5;
+    color: #222;
+}
+
+.dark-theme input, .dark-theme textarea{
+    background: #2b2b2b;
+    color: #fff;
+}
+
+.light-theme about p, .light-theme section p{
+    color: #222;
+}
+
+.dark-theme about p, .dark-theme section p{
+    color: #fff;
+}
+
+.light-theme footer{
+    color: #222;
+}
+
+.dark-theme footer{
+    color: #bdbdbd;
 }
 
 /* Main Styling */
@@ -220,4 +269,16 @@ textarea:focus {
     border-top: 1px solid #444;
     padding-top: 20px;
     color: #bdbdbd;
+}
+
+.dark-theme {
+    background-color: #121212;
+    color: #f5f5f5;
+    min-height: 100vh;
+}
+
+.light-theme {
+    background-color: #f5f5f5;
+    color: #121212;
+    min-height: 100vh;
 }
