@@ -1,16 +1,136 @@
-# React + Vite
+# Student Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive student portfolio website built using **React** and **Vite**. The project demonstrates component-based architecture, client-side routing, state management, and REST API integration by fetching GitHub repositories dynamically.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Features
 
-## React Compiler
+- Home, Projects, and Contact pages
+- React Router for navigation
+- Dark / Light theme toggle
+- 404 Not Found page
+- Dynamic GitHub repository listing
+- Repository search functionality
+- Loading spinner during API requests
+- Error handling with retry option
+- Responsive user interface
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- React
+- Vite
+- JavaScript (ES6+)
+- React Router DOM
+- HTML5
+- CSS3
+- GitHub REST API
+
+---
+
+## Project Structure
+
+```
+student-portfolio/
+│
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── Header.jsx
+│   │   ├── About.jsx
+│   │   ├── Skills.jsx
+│   │   ├── Footer.jsx
+│   │   ├── Navbar.jsx
+│   │   ├── Spinner.jsx
+│   │   ├── ErrorMessage.jsx
+│   │   └── RepoCard.jsx
+│   │
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Projects.jsx
+│   │   ├── Contact.jsx
+│   │   └── NotFound.jsx
+│   │
+│   ├── App.jsx
+│   ├── App.css
+│   └── main.jsx
+│
+├── package.json
+└── README.md
+```
+
+---
+
+## GitHub API
+
+The Projects page fetches public repositories using the GitHub REST API.
+
+Example Endpoint:
+
+```
+https://api.github.com/users/<github-username>/repos
+```
+
+---
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/HetGangani/portfolio-D25IT125.git
+```
+
+Go inside the project:
+
+```bash
+cd portfolio-D25IT125
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the development server:
+
+```bash
+npm run dev
+```
+
+---
+
+## Functionalities
+
+- Multi-page navigation
+- Dynamic state management
+- Conditional rendering
+- GitHub API integration
+- Search repositories
+- Loading indicator
+- Error handling
+- Retry API request
+- Responsive design
+
+---
+
+## Future Improvements
+
+- GitHub authentication
+- Project categories
+- Contact form backend
+- Animations
+- Deployment using Vercel
+
+---
+
+## Author
+
+**Het Gangani**
+
+B.Tech Information Technology
+
+CHARUSAT
