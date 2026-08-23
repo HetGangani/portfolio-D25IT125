@@ -6,9 +6,11 @@ import { useState } from 'react';
 import Navbar from './components/Navbar';
 
 import Home from './pages/Home';
+import About from './components/About';
+import Skills from './components/Skills';
 import Projects from './pages/Projects';
 import Contact from './pages/Contact';
-import NotFound from './pages/NoFound';
+import NotFound from './pages/NotFound';
 
 function App() {
     const [darkMode, setDarkMode] = useState(true);
@@ -21,8 +23,11 @@ function App() {
           />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/skills' element={<Skills />} />
             <Route path="/projects" element={<Projects />} />
             <Route path="/contact" element={<Contact />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
