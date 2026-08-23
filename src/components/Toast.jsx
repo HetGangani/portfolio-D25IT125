@@ -1,4 +1,5 @@
 function Toast({ message, type = "success", onClose }) {
+
     if (!message) {
         return null;
     }

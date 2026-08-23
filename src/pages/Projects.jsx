@@ -5,6 +5,7 @@ import ErrorMessage from "../components/ErrorMessage";
 import RepoCard from "../components/RepoCard";
 import TaskCard from "../components/TaskCard";
 import TaskForm from "../components/TaskForm";
+import Toast from "../components/Toast";
 
 import { getTasks } from "../api";
 
@@ -20,6 +21,11 @@ function Projects() {
     const [repoError, setRepoError] = useState(null);
 
     const [searchTerm, setSearchTerm] = useState("");
+
+    const [toast, setToast] = useState({
+        message: "",
+        type: "success"
+    });
 
 
     /* =====================================================
@@ -141,12 +147,13 @@ function Projects() {
                     : task
             )
         );
-
+        showToast("Task created successfully!!!", "success");
     };
 
 
     const handleTaskCreationFailed = (
-        temporaryId
+        temporaryId,
+        errorMessage
     ) => {
 
         setTasks((currentTasks) =>
@@ -154,7 +161,7 @@ function Projects() {
                 (task) => task._id !== temporaryId
             )
         );
-
+        showToast(errorMessage || "Failed to create task!!!", "error");
     };
 
 
@@ -171,7 +178,7 @@ function Projects() {
                     : task
             )
         );
-
+        showToast("Task update successfully!!!", "success");
     };
 
 
@@ -186,9 +193,32 @@ function Projects() {
                 (task) => task._id !== deletedTaskId
             )
         );
-
+        showToast("Task deleted successfully!!!", "success");
     };
 
+    /* =====================================================
+       TOAST
+       ===================================================== */
+    const showToast = (message, type = "success") => {
+
+        setToast({ message, type });
+    };
+
+    useEffect(() => {
+
+        if (!toast.message) {
+            return;
+        }
+
+        const timer = setTimeout(() => {
+            setToast({
+                message: "",
+                type: "success"
+            });
+        }, 3000);
+
+        return () => clearTimeout(timer);
+    }, [toast.message]);
 
     /* =====================================================
        PAGE
@@ -208,6 +238,16 @@ function Projects() {
                 GitHub profile.
             </p>
 
+            <Toast
+                message={toast.message}
+                type={toast.type}
+                onClose={() =>
+                    setToast({
+                        message: "",
+                        type: "success"
+                    })
+                }
+            />
 
             {/* Repository Search */}
 

@@ -158,15 +158,15 @@ function TaskCard({ task, onTaskUpdated, onTaskDeleted }) {
                             disabled={loading}
                             className="task-select"
                         >
-                            <option value="Low">
+                            <option value="low">
                                 Low
                             </option>
 
-                            <option value="Medium">
+                            <option value="medium">
                                 Medium
                             </option>
 
-                            <option value="High">
+                            <option value="high">
                                 High
                             </option>
                         </select>
@@ -232,7 +232,7 @@ function TaskCard({ task, onTaskUpdated, onTaskDeleted }) {
                                     task.description || ""
                                 );
                                 setPriority(
-                                    task.priority || "Medium"
+                                    task.priority || "medium"
                                 );
                                 setCompleted(
                                     task.completed
@@ -287,7 +287,7 @@ function TaskCard({ task, onTaskUpdated, onTaskDeleted }) {
                 <p>
                     ⭐ Priority:{" "}
                     <strong>
-                        {task.priority || "Medium"}
+                        {task.priority || "medium"}
                     </strong>
                 </p>
 
