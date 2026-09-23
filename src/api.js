@@ -1,58 +1,58 @@
-const BASE_URL = "http://localhost:5000";
+const API_URL = "http://localhost:5000/tasks";
+
+const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+
+    return {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
+    };
+};
+
+const handleResponse = async (response) => {
+    if (response.status === 401) {
+        localStorage.removeItem("token");
+        window.location.href = "/login";
+        return null;
+    }
+
+    return response.json();
+};
 
 export const getTasks = async () => {
-    const response = await fetch(`${BASE_URL}/tasks`);
+    const response = await fetch(API_URL, {
+        method: "GET",
+        headers: getAuthHeaders()
+    });
 
-    if(!response.ok) {
-        throw new Error("Failed to fetch tasks.");
-    }
-
-    return response.json();
+    return handleResponse(response);
 };
 
-export const createTask = async (taskData) => {
-    const response = await fetch(`${BASE_URL}/tasks`, {
+export const createTask = async (task) => {
+    const response = await fetch(API_URL, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(taskData)
+        headers: getAuthHeaders(),
+        body: JSON.stringify(task)
     });
 
-    if(!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create task");
-    }
-
-    return response.json();
+    return handleResponse(response);
 };
 
-export const updateTask = async (id, taskData) => {
-    const response = await fetch(`${BASE_URL}/tasks/${id}`, {
+export const updateTask = async (id, task) => {
+    const response = await fetch(`${API_URL}/${id}`, {
         method: "PUT",
-        headers: {
-            "Content-Type" : "application/json"
-        },
-        body: JSON.stringify(taskData)
+        headers: getAuthHeaders(),
+        body: JSON.stringify(task)
     });
 
-    if(!response.ok) {
-        const errorData = await response.json();
-        throw new error(errorData.message || "Failed to updatee task!!");
-    }
-
-    return response.json();
+    return handleResponse(response);
 };
 
 export const deleteTask = async (id) => {
-    const response = await fetch(`${BASE_URL}/tasks/${id}`, {
-        method: "DELETE"
+    const response = await fetch(`${API_URL}/${id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders()
     });
 
-    if(!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to delete task.");
-    }
-
-    return response.json();
+    return handleResponse(response);
 };

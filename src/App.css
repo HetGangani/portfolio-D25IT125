@@ -1258,3 +1258,46 @@ textarea {
 
     font-size: 28px;
 }
+
+.auth-container {
+    min-height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+}
+
+.auth-form {
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.auth-form input {
+    padding: 0.8rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+.auth-form button {
+    padding: 0.8rem;
+    cursor: pointer;
+}
+
+.auth-error {
+    color: #dc2626;
+}
+
+.auth-success {
+    color: #16a34a;
+}
+
+.nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
