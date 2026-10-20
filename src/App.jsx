@@ -14,6 +14,7 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoutes from './components/ProtectedRoutes';
+import Tasks from "./pages/Tasks";
 
 function App() {
     const [darkMode, setDarkMode] = useState(true);
@@ -29,6 +30,7 @@ function App() {
             <Route path='/about' element={<About />} />
             <Route path='/skills' element={<Skills />} />
             <Route path="/projects" element={<Projects />} />
+            <Route path="/tasks" element={<Tasks />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />

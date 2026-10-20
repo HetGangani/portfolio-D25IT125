@@ -18,6 +18,7 @@ function Navbar({ darkMode, setDarkMode }) {
         <ul className="nav-links">
             <li><NavLink to="/">Home</NavLink></li>
             <li><NavLink to="/projects">Projects</NavLink></li>
+            <li><NavLink to="/tasks">Tasks</NavLink></li>
             <li><NavLink to="/contact">Contact</NavLink></li>           
         </ul>
         
