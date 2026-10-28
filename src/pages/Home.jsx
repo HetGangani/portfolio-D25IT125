@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Header from "../components/Header";
 import About from "../components/About";
 import Skills from "../components/Skills";
@@ -17,4 +18,4 @@ function Home() {
     );
 }
 
-export default Home;
+export default memo(Home);
