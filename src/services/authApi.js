@@ -39,3 +39,20 @@ export const getCurrentUser = async () => {
 export const logoutUser = () => {
     localStorage.removeItem("token");
 };
+
+export const getUserRole = () => {
+    const token = localStorage.getItem("token");
+    if (!token) return null;
+    try {
+        const parts = token.split(".");
+        if (parts.length !== 3) return null;
+        const payload = JSON.parse(atob(parts[1]));
+        return payload.role || "user";
+    } catch (e) {
+        return null;
+    }
+};
+
+export const isAdminUser = () => {
+    return getUserRole() === "admin";
+};

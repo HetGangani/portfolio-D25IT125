@@ -1,10 +1,12 @@
-import {NavLink, useNavigate} from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { isAdminUser } from "../services/authApi";
 
 function Navbar({ darkMode, setDarkMode }) {
 
     const navigate = useNavigate();
 
     const isLoggedIn = !!localStorage.getItem("token");
+    const isAdmin = isLoggedIn && isAdminUser();
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -19,6 +21,9 @@ function Navbar({ darkMode, setDarkMode }) {
             <li><NavLink to="/">Home</NavLink></li>
             <li><NavLink to="/projects">Projects</NavLink></li>
             <li><NavLink to="/tasks">Tasks</NavLink></li>
+            {isAdmin && (
+                <li><NavLink to="/cache-monitoring">Cache Monitoring</NavLink></li>
+            )}
             <li><NavLink to="/contact">Contact</NavLink></li>           
         </ul>
         

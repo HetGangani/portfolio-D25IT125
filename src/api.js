@@ -56,3 +56,12 @@ export const deleteTask = async (id) => {
 
     return handleResponse(response);
 };
+
+export const getCacheStats = async () => {
+    const response = await fetch(`${API_URL}/cache/stats`, {
+        method: "GET",
+        headers: getAuthHeaders()
+    });
+
+    return handleResponse(response);
+};

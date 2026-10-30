@@ -13,6 +13,7 @@ import NotFound from './pages/NotFound';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ProtectedRoutes from './components/ProtectedRoutes';
+import AdminRoute from './components/AdminRoute';
 
 // Helper to ensure a minimum fallback duration and avoid loading flicker (Practical 8)
 const lazyWithDelay = (importFn, minDelay = 300) => {
@@ -40,6 +41,7 @@ const lazyWithDelay = (importFn, minDelay = 300) => {
 const Projects = lazyWithDelay(() => import('./pages/Projects'), 300);
 const Contact = lazyWithDelay(() => import('./pages/Contact'), 300);
 const Tasks = lazyWithDelay(() => import('./pages/Tasks'), 300);
+const CacheMonitoring = lazyWithDelay(() => import('./pages/CacheMonitoring'), 300);
 
 function App() {
     const [darkMode, setDarkMode] = useState(true);
@@ -62,6 +64,11 @@ function App() {
 
               <Route element={<ProtectedRoutes />}>
                 <Route path="/tasks" element={<Tasks />} />
+              </Route>
+
+              {/* Protected Cache Monitoring Dashboard (Admin Only) */}
+              <Route element={<AdminRoute />}>
+                <Route path="/cache-monitoring" element={<CacheMonitoring />} />
               </Route>
 
               <Route path="*" element={<NotFound />} />

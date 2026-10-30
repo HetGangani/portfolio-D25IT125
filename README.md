@@ -192,19 +192,27 @@ To optimize the React frontend application by implementing route-based code spli
 
 Verified output from `npm run build` with Vite:
 
+#### Final Production Build Chunk Breakdown
+
 | Asset | Size | Gzip |
 |:---|---:|---:|
-| **Main JavaScript** | 239.41 kB | 76.57 kB |
-| **Tasks chunk** | 7.98 kB | 2.32 kB |
-| **Projects chunk** | 1.77 kB | 0.86 kB |
-| **Contact chunk** | 1.49 kB | 0.56 kB |
-| **ErrorMessage chunk** | 0.56 kB | 0.31 kB |
-| **CSS** | 11.18 kB | 2.81 kB |
+| **Main JavaScript** (`index-*.js`) | 239.43 kB | 76.58 kB |
+| **Tasks chunk** (`Tasks-*.js`) | 7.98 kB | 2.32 kB |
+| **Projects chunk** (`Projects-*.js`) | 1.77 kB | 0.85 kB |
+| **Contact chunk** (`Contact-*.js`) | 1.49 kB | 0.56 kB |
+| **ErrorMessage chunk** (`ErrorMessage-*.js`) | 0.56 kB | 0.31 kB |
+| **CSS** (`index-*.css`) | 11.18 kB | 2.81 kB |
 
-#### Comparison with Previous Build (Before Tasks was Lazy-Loaded):
-- **Previous Main JavaScript:** 247.53 kB (gzip: 78.32 kB)
-- **Current Main JavaScript:** 239.41 kB (gzip: 76.57 kB)
-- **Initial Bundle Reduction:** **8.12 kB** uncompressed reduction and **1.75 kB** gzip reduction.
+#### Baseline vs. Final Bundle Comparison
+
+| Metric | Baseline (Pre-Optimization) | Final (Code-Split & Optimized) | Difference |
+|:---|---:|---:|---:|
+| **Main JavaScript** | 249.81 kB | 239.43 kB | -10.38 kB |
+| **Gzipped JavaScript** | 78.67 kB | 76.58 kB | -2.09 kB |
+| **CSS** | 11.18 kB | 11.18 kB | 0.00 kB |
+| **Gzipped CSS** | 2.81 kB | 2.81 kB | 0.00 kB |
+
+> **Note on Baseline Screenshot:** The original terminal screenshot for the pre-optimization baseline build is unavailable; therefore, the baseline values are documented directly from the recorded build output captured prior to code changes.
 
 Vite successfully code-split the application into independent chunks. Browser Network inspection confirmed that `Projects` and `Tasks` chunks are transferred on-demand only when their respective navigation links are clicked.
 
@@ -219,7 +227,7 @@ From the Home-page production preview run (`npm run preview`):
 > *Note: These figures represent observed values from a single browser inspection run during manual preview verification, not a controlled laboratory benchmark or definitive proof of improvement. They are recorded here as observational evidence of runtime lifecycle metrics and are not directly compared against earlier development-server timing.*
 
 #### Recommended Screenshot Artifacts
-Screenshots demonstrating the optimization have been captured during conversation verification. When committing evidence to the repository, save the following captures under `docs/screenshots/` (or attach as GitHub release/PR assets):
+Screenshots demonstrating the optimization have been captured during conversation verification (note: the original baseline build screenshot is unavailable and documented from recorded measurements above). When committing evidence to the repository, save the following captures under `docs/screenshots/` (or attach as GitHub release/PR assets):
 1. `docs/screenshots/network-home-initial-chunks.png` — Network tab showing only the initial bundle on first visit.
 2. `docs/screenshots/network-projects-chunk-demand.png` — Network tab capturing `Projects` chunk downloaded upon clicking Projects.
 3. `docs/screenshots/network-tasks-chunk-demand.png` — Network tab capturing `Tasks` chunk downloaded upon visiting `/tasks`.
