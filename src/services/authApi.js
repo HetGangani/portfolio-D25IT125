@@ -48,7 +48,7 @@ export const getUserRole = () => {
         if (parts.length !== 3) return null;
         const payload = JSON.parse(atob(parts[1]));
         return payload.role || "user";
-    } catch (e) {
+    } catch {
         return null;
     }
 };

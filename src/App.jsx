@@ -3,7 +3,7 @@ import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useState, lazy, Suspense } from 'react';
 
-import Navbar from './components/Navbar';
+import AppLayout from './components/AppLayout';
 import LoadingFallback from './components/LoadingFallback';
 
 import Home from './pages/Home';
@@ -44,39 +44,39 @@ const Tasks = lazyWithDelay(() => import('./pages/Tasks'), 300);
 const CacheMonitoring = lazyWithDelay(() => import('./pages/CacheMonitoring'), 300);
 
 function App() {
-    const [darkMode, setDarkMode] = useState(true);
-    return(
-      <div className={darkMode ? "dark-theme" : "light-theme"}>  
-        <BrowserRouter>
-          <Navbar
-              darkMode={darkMode}
-              setDarkMode={setDarkMode} 
-          />
-          <Suspense fallback={<LoadingFallback />}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path='/about' element={<About />} />
-              <Route path='/skills' element={<Skills />} />
-              <Route path="/projects" element={<Projects />} />
-              <Route path="/contact" element={<Contact />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+    // Default to clean modern light SaaS theme with dark mode support
+    const [darkMode, setDarkMode] = useState(false);
 
-              <Route element={<ProtectedRoutes />}>
-                <Route path="/tasks" element={<Tasks />} />
-              </Route>
+    return (
+        <div className={darkMode ? "dark-theme" : "light-theme"}>
+            <BrowserRouter>
+                <AppLayout darkMode={darkMode} setDarkMode={setDarkMode}>
+                    <Suspense fallback={<LoadingFallback />}>
+                        <Routes>
+                            <Route path="/" element={<Home />} />
+                            <Route path="/about" element={<About />} />
+                            <Route path="/skills" element={<Skills />} />
+                            <Route path="/projects" element={<Projects />} />
+                            <Route path="/contact" element={<Contact />} />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
 
-              {/* Protected Cache Monitoring Dashboard (Admin Only) */}
-              <Route element={<AdminRoute />}>
-                <Route path="/cache-monitoring" element={<CacheMonitoring />} />
-              </Route>
+                            <Route element={<ProtectedRoutes />}>
+                                <Route path="/tasks" element={<Tasks />} />
+                            </Route>
 
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </Suspense>
-        </BrowserRouter>
-      </div>
-  );
+                            {/* Protected Cache Monitoring Dashboard (Admin Only) */}
+                            <Route element={<AdminRoute />}>
+                                <Route path="/cache-monitoring" element={<CacheMonitoring />} />
+                            </Route>
+
+                            <Route path="*" element={<NotFound />} />
+                        </Routes>
+                    </Suspense>
+                </AppLayout>
+            </BrowserRouter>
+        </div>
+    );
 }
 
 export default App;

@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Mail, CheckCircle, ArrowRight } from "../components/Icons";
 
 function Contact() {
     const [formData, setFormData] = useState({
@@ -6,6 +7,8 @@ function Contact() {
         email: "",
         message: ""
     });
+
+    const [submitted, setSubmitted] = useState(false);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -18,74 +21,129 @@ function Contact() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-
-        alert(
-            `Thank you, ${formData.name}!\n\nYour message has been submitted successfully.`
-        );
-
-        setFormData({
-            name: "",
-            email: "",
-            message: ""
-        });
+        setSubmitted(true);
     };
 
     return (
-        <div className="page">
-            <h1>Contact Me</h1>
+        <div className="saas-page-container">
+            <div className="saas-page-header">
+                <div>
+                    <h1 className="saas-page-title">Contact & Feedback</h1>
+                    <p className="saas-page-subtitle">
+                        Reach out for inquiries, feedback, or collaborations on full-stack web applications.
+                    </p>
+                </div>
+            </div>
 
-            <form onSubmit={handleSubmit}>
+            <div className="saas-dashboard-grid">
+                {/* Form Card */}
+                <div className="saas-card">
+                    <div className="card-header-action">
+                        <div>
+                            <h3 className="card-title">Send a Message</h3>
+                            <p className="card-subtitle">Fill in the details below to reach out directly.</p>
+                        </div>
+                    </div>
 
-                <label>Name</label><br />
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Enter your name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                />
+                    {submitted && (
+                        <div className="saas-alert saas-alert-success" role="alert">
+                            <CheckCircle size={18} />
+                            <span>
+                                Thank you, <strong>{formData.name}</strong>! Your message has been submitted successfully.
+                            </span>
+                        </div>
+                    )}
 
-                <br /><br />
+                    <form onSubmit={handleSubmit} className="saas-task-form">
+                        <div className="saas-field">
+                            <label className="saas-label">Your Name</label>
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Enter your full name"
+                                value={formData.name}
+                                onChange={handleChange}
+                                required
+                                className="saas-input"
+                            />
+                        </div>
 
-                <label>Email</label><br />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Enter your email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                />
+                        <div className="saas-field">
+                            <label className="saas-label">Email Address</label>
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="your.email@example.com"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                                className="saas-input"
+                            />
+                        </div>
 
-                <br /><br />
+                        <div className="saas-field">
+                            <label className="saas-label">Message</label>
+                            <textarea
+                                name="message"
+                                placeholder="Type your message here..."
+                                rows="5"
+                                value={formData.message}
+                                onChange={handleChange}
+                                required
+                                className="saas-textarea"
+                            />
+                        </div>
 
-                <label>Message</label><br />
-                <textarea
-                    name="message"
-                    placeholder="Enter your message"
-                    rows="5"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                ></textarea>
+                        <div className="form-action-bar">
+                            <button type="submit" className="saas-btn saas-btn-primary">
+                                <span>Send Message</span>
+                                <ArrowRight />
+                            </button>
+                        </div>
+                    </form>
+                </div>
 
-                <br /><br />
+                {/* Live Preview Card & Info */}
+                <div className="saas-card">
+                    <div className="card-header-action">
+                        <div>
+                            <h3 className="card-title">Live Message Preview</h3>
+                            <p className="card-subtitle">Real-time state binding preview</p>
+                        </div>
+                    </div>
 
-                <button type="submit">
-                    Send Message
-                </button>
+                    <div className="saas-preview-box">
+                        <div className="preview-row">
+                            <span className="preview-label">Name:</span>
+                            <span className="preview-value">{formData.name || <em className="text-muted">Not specified</em>}</span>
+                        </div>
 
-            </form>
+                        <div className="preview-row">
+                            <span className="preview-label">Email:</span>
+                            <span className="preview-value">{formData.email || <em className="text-muted">Not specified</em>}</span>
+                        </div>
 
-            <hr />
+                        <div className="preview-row">
+                            <span className="preview-label">Message:</span>
+                            <p className="preview-message-body">
+                                {formData.message || <em className="text-muted">No message typed yet...</em>}
+                            </p>
+                        </div>
+                    </div>
 
-            <h3>Live Preview</h3>
+                    <div className="profile-section-divider" />
 
-            <p><strong>Name:</strong> {formData.name}</p>
-            <p><strong>Email:</strong> {formData.email}</p>
-            <p><strong>Message:</strong> {formData.message}</p>
-
+                    <div className="contact-direct-card">
+                        <h4 className="contact-direct-title">Direct Inquiries</h4>
+                        <div className="contact-link-item">
+                            <Mail size={16} />
+                            <a href="mailto:hetgangani08@gmail.com" className="contact-email-link">
+                                hetgangani08@gmail.com
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

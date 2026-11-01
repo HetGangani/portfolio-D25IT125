@@ -1,18 +1,18 @@
 function LoadingFallback({
-    message = "Loading page...",
-    submessage = "Please wait while the page is being loaded."
+    message = "Loading component...",
+    submessage = "Please wait while the page resources are being retrieved."
 }) {
     return (
         <div
-            className="page"
+            className="saas-loading-fallback-canvas"
             role="status"
             aria-live="polite"
             aria-busy="true"
         >
-            <div className="spinner-container">
-                <div className="spinner" aria-hidden="true"></div>
-                <h3>{message}</h3>
-                {submessage && <p>{submessage}</p>}
+            <div className="saas-card saas-loader-card">
+                <div className="saas-spinner-ring" />
+                <h4 className="loader-title">{message}</h4>
+                {submessage && <p className="loader-submessage">{submessage}</p>}
             </div>
         </div>
     );

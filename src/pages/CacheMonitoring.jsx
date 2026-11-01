@@ -1,5 +1,16 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { getCacheStats } from "../api";
+import {
+    RefreshCw,
+    Database,
+    Key,
+    TrendingUp,
+    BarChart2,
+    Clock,
+    AlertCircle,
+    Layers,
+    Shield
+} from "../components/Icons";
 
 function CacheMonitoring() {
     const [statsData, setStatsData] = useState(null);
@@ -12,17 +23,15 @@ function CacheMonitoring() {
     const isMountedRef = useRef(true);
 
     const fetchStats = useCallback(async (isInitial = false) => {
-        if (isInitial) {
-            setLoading(true);
-        } else {
+        if (!isInitial) {
             setRefreshing(true);
         }
-        setError(null);
 
         try {
             const data = await getCacheStats();
 
             if (!isMountedRef.current) return;
+            setError(null);
 
             if (!data) {
                 // 401 redirect handled by api.js handleResponse
@@ -51,7 +60,32 @@ function CacheMonitoring() {
     // Initial load and 5-second automatic refresh with unmount cleanup
     useEffect(() => {
         isMountedRef.current = true;
-        fetchStats(true);
+
+        async function loadInitialTelemetry() {
+            try {
+                const data = await getCacheStats();
+                if (!isMountedRef.current || !data) return;
+
+                if (data.success === false) {
+                    setError(data.message || "Failed to load cache statistics.");
+                    setStatsData(null);
+                    return;
+                }
+
+                setStatsData(data);
+                setLastUpdated(new Date());
+            } catch (err) {
+                if (isMountedRef.current) {
+                    setError(err.message || "Unable to reach the backend server.");
+                }
+            } finally {
+                if (isMountedRef.current) {
+                    setLoading(false);
+                }
+            }
+        }
+
+        loadInitialTelemetry();
 
         let intervalId = null;
         if (autoRefreshEnabled) {
@@ -80,159 +114,253 @@ function CacheMonitoring() {
     const ttl = statsData?.ttl ?? 60;
 
     return (
-        <div className="page cache-monitoring-page">
-            <div className="cache-header">
+        <div className="saas-page-container">
+            {/* Top Header */}
+            <div className="saas-page-header">
                 <div>
-                    <h1>⚡ In-Memory Cache Monitoring</h1>
-                    <p className="repo-subtitle">
-                        Real-time metrics, hit/miss ratios, and key inspection for <code>node-cache</code>.
+                    <div className="header-badge-row">
+                        <span className="saas-pill-admin">
+                            <Shield size={12} style={{ marginRight: 4 }} />
+                            Admin Console
+                        </span>
+                    </div>
+                    <h1 className="saas-page-title">Cache Monitoring & Telemetry</h1>
+                    <p className="saas-page-subtitle">
+                        Real-time inspection of in-memory <code>node-cache</code> hits, misses, keys, and expiration TTL.
                     </p>
                 </div>
 
-                <div className="cache-controls">
+                <div className="saas-header-actions">
                     <button
-                        className="cache-refresh-btn"
+                        className={`saas-btn saas-btn-secondary ${refreshing ? "loading" : ""}`}
                         onClick={() => fetchStats(false)}
                         disabled={loading || refreshing}
-                        title="Click to refresh statistics immediately"
+                        type="button"
+                        title="Refresh statistics immediately"
                     >
-                        {refreshing ? "🔄 Refreshing..." : "🔄 Refresh"}
+                        <RefreshCw size={16} className={refreshing ? "spin-icon" : ""} />
+                        <span>{refreshing ? "Refreshing..." : "Refresh"}</span>
                     </button>
 
                     <button
-                        className={`cache-toggle-btn ${autoRefreshEnabled ? "active" : ""}`}
+                        className={`saas-toggle-pill-btn ${autoRefreshEnabled ? "active" : ""}`}
                         onClick={() => setAutoRefreshEnabled(!autoRefreshEnabled)}
-                        title="Toggle 5-second auto-refresh"
+                        type="button"
+                        title="Toggle 5-second auto refresh"
                     >
-                        {autoRefreshEnabled ? "⏱️ Auto-refresh: ON (5s)" : "⏸️ Auto-refresh: OFF"}
+                        <span className={`pulse-indicator ${autoRefreshEnabled ? "live" : ""}`} />
+                        <span>{autoRefreshEnabled ? "Auto-Refresh: 5s" : "Auto-Refresh: Off"}</span>
                     </button>
                 </div>
             </div>
 
+            {/* Status Information Bar */}
             {lastUpdated && (
-                <div className="cache-status-bar">
-                    <span className="cache-status-badge live">
-                        ● Backend Connected
-                    </span>
-                    <span className="cache-timestamp">
-                        Last updated: {lastUpdated.toLocaleTimeString()}
-                    </span>
+                <div className="saas-status-bar-card">
+                    <div className="status-left">
+                        <span className="saas-live-badge">
+                            <span className="pulse-dot-green" />
+                            Backend Telemetry Active
+                        </span>
+                        <span className="status-divider">•</span>
+                        <span className="status-endpoint-tag">
+                            GET /tasks/cache/stats
+                        </span>
+                    </div>
+
+                    <div className="status-right">
+                        <Clock size={14} />
+                        <span>Last updated: {lastUpdated.toLocaleTimeString()}</span>
+                    </div>
                 </div>
             )}
 
+            {/* Content Body */}
             {loading ? (
-                <div className="cache-loader-box">
-                    <div className="spinner"></div>
-                    <p>Loading cache telemetry from backend...</p>
+                <div className="saas-card saas-loader-card">
+                    <div className="saas-spinner-ring" />
+                    <h4>Loading telemetry metrics...</h4>
+                    <p>Querying in-memory NodeCache statistics from Express API.</p>
                 </div>
             ) : error ? (
-                <div className="cache-error-box">
-                    <h3>⚠️ Cache Statistics Unavailable</h3>
+                <div className="saas-card saas-error-card">
+                    <div className="error-icon-box">
+                        <AlertCircle size={32} />
+                    </div>
+                    <h3>Cache Telemetry Unavailable</h3>
                     <p>{error}</p>
                     <button
-                        className="cache-retry-btn"
+                        className="saas-btn saas-btn-primary saas-btn-sm"
                         onClick={() => fetchStats(true)}
+                        type="button"
                     >
                         Retry Connection
                     </button>
                 </div>
             ) : (
                 <>
-                    {/* Primary Metrics Grid */}
-                    <div className="cache-metrics-grid">
+                    {/* Primary Metrics 4-Card Grid */}
+                    <div className="saas-stats-grid">
                         {/* Hits Card */}
-                        <div className="cache-metric-card hits-card">
-                            <div className="card-top">
-                                <span className="card-label">Total Cache Hits</span>
-                                <span className="card-icon">🎯</span>
+                        <div className="saas-stat-card">
+                            <div className="stat-card-header">
+                                <span className="stat-label">Cache Hits</span>
+                                <div className="stat-icon-wrapper stat-icon-emerald">
+                                    <TrendingUp size={18} />
+                                </div>
                             </div>
-                            <div className="card-value hits-value">{hits}</div>
-                            <div className="card-hint">Requests served directly from RAM</div>
+                            <div className="stat-value text-emerald">{hits}</div>
+                            <div className="stat-footer">
+                                <span className="stat-hint">Direct in-memory RAM hits</span>
+                            </div>
                         </div>
 
                         {/* Misses Card */}
-                        <div className="cache-metric-card misses-card">
-                            <div className="card-top">
-                                <span className="card-label">Total Cache Misses</span>
-                                <span className="card-icon">🔍</span>
+                        <div className="saas-stat-card">
+                            <div className="stat-card-header">
+                                <span className="stat-label">Cache Misses</span>
+                                <div className="stat-icon-wrapper stat-icon-amber">
+                                    <Database size={18} />
+                                </div>
                             </div>
-                            <div className="card-value misses-value">{misses}</div>
-                            <div className="card-hint">Requests querying MongoDB database</div>
+                            <div className="stat-value text-amber">{misses}</div>
+                            <div className="stat-footer">
+                                <span className="stat-hint">Fallback database queries</span>
+                            </div>
                         </div>
 
-                        {/* Cached Keys Count Card */}
-                        <div className="cache-metric-card keys-card">
-                            <div className="card-top">
-                                <span className="card-label">Cached Keys</span>
-                                <span className="card-icon">🔑</span>
+                        {/* Cached Keys Card */}
+                        <div className="saas-stat-card">
+                            <div className="stat-card-header">
+                                <span className="stat-label">Tracked Keys</span>
+                                <div className="stat-icon-wrapper stat-icon-indigo">
+                                    <Key size={18} />
+                                </div>
                             </div>
-                            <div className="card-value keys-value">{cachedKeys.length}</div>
-                            <div className="card-hint">Active entries stored in memory</div>
+                            <div className="stat-value text-indigo">{cachedKeys.length}</div>
+                            <div className="stat-footer">
+                                <span className="stat-hint">Active entries stored in memory</span>
+                            </div>
                         </div>
 
                         {/* Hit Ratio Card */}
-                        <div className="cache-metric-card ratio-card">
-                            <div className="card-top">
-                                <span className="card-label">Cache Hit Ratio</span>
-                                <span className="card-icon">📈</span>
+                        <div className="saas-stat-card">
+                            <div className="stat-card-header">
+                                <span className="stat-label">Hit Ratio</span>
+                                <div className="stat-icon-wrapper stat-icon-blue">
+                                    <BarChart2 size={18} />
+                                </div>
                             </div>
-                            <div className="card-value ratio-value">{hitRatio}%</div>
-                            <div className="card-hint">
-                                {totalRequests === 0
-                                    ? "No cache requests recorded yet"
-                                    : `${hits} hits out of ${totalRequests} total requests`}
+                            <div className="stat-value">{hitRatio}%</div>
+                            <div className="stat-footer">
+                                <span className="stat-hint">
+                                    {totalRequests === 0
+                                        ? "No queries recorded yet"
+                                        : `${hits} of ${totalRequests} total requests`}
+                                </span>
                             </div>
                         </div>
                     </div>
 
-                    {/* Cache Configuration & Detailed Telemetry */}
-                    <div className="cache-details-section">
-                        <div className="cache-section-card">
-                            <h3>⚙️ Cache Configuration</h3>
-                            <div className="cache-config-grid">
-                                <div className="config-item">
-                                    <span className="config-label">Cache Engine:</span>
-                                    <span className="config-val">node-cache (In-Memory)</span>
+                    {/* Hit Ratio Progress Visualizer Card */}
+                    <div className="saas-card saas-progress-banner">
+                        <div className="progress-banner-header">
+                            <div>
+                                <h3 className="card-title">Cache Efficiency Visualizer</h3>
+                                <p className="card-subtitle">
+                                    Percentage of read operations fulfilled without querying MongoDB
+                                </p>
+                            </div>
+                            <div className="progress-percentage-pill">
+                                <span>{hitRatio}% Hit Rate</span>
+                            </div>
+                        </div>
+
+                        <div className="saas-progress-track">
+                            <div
+                                className="saas-progress-bar"
+                                style={{ width: `${Math.min(100, Math.max(0, parseFloat(hitRatio) || 0))}%` }}
+                                role="progressbar"
+                                aria-valuenow={parseFloat(hitRatio) || 0}
+                                aria-valuemin="0"
+                                aria-valuemax="100"
+                            />
+                        </div>
+                    </div>
+
+                    {/* Detailed Configuration & Keys Grid */}
+                    <div className="saas-dashboard-grid">
+                        {/* Left: Configuration Card */}
+                        <div className="saas-card">
+                            <div className="card-header-action">
+                                <div>
+                                    <h3 className="card-title">Engine Configuration</h3>
+                                    <p className="card-subtitle">Active parameters applied in utils/cache.js</p>
                                 </div>
-                                <div className="config-item">
-                                    <span className="config-label">Configured TTL:</span>
-                                    <span className="config-val highlight">{ttl} seconds</span>
+                            </div>
+
+                            <div className="saas-config-table">
+                                <div className="config-row">
+                                    <span className="config-key">Cache Engine</span>
+                                    <span className="config-value-badge">node-cache (In-Memory)</span>
                                 </div>
-                                <div className="config-item">
-                                    <span className="config-label">Automatic Cleanup:</span>
-                                    <span className="config-val">Active (Every {Math.max(ttl * 2, 120)}s)</span>
+
+                                <div className="config-row">
+                                    <span className="config-key">Standard TTL</span>
+                                    <span className="config-value-highlight">{ttl} Seconds</span>
                                 </div>
-                                <div className="config-item">
-                                    <span className="config-label">Endpoint:</span>
-                                    <span className="config-val code">GET /tasks/cache/stats</span>
+
+                                <div className="config-row">
+                                    <span className="config-key">Automatic Cleanup</span>
+                                    <span className="config-value">Every {Math.max(ttl * 2, 120)}s</span>
+                                </div>
+
+                                <div className="config-row">
+                                    <span className="config-key">Invalidation Triggers</span>
+                                    <span className="config-value">POST, PUT, DELETE mutations</span>
+                                </div>
+
+                                <div className="config-row">
+                                    <span className="config-key">Authorization</span>
+                                    <span className="config-value-badge admin">Admin Role Required</span>
                                 </div>
                             </div>
                         </div>
 
-                        {/* Cached Keys List */}
-                        <div className="cache-section-card">
-                            <div className="keys-header">
-                                <h3>🏷️ Currently Cached Keys ({cachedKeys.length})</h3>
-                                <span className="keys-subtext">Dynamically tracked in memory</span>
+                        {/* Right: Cached Keys Card */}
+                        <div className="saas-card">
+                            <div className="card-header-action">
+                                <div>
+                                    <h3 className="card-title">Currently Cached Keys</h3>
+                                    <p className="card-subtitle">Active keys stored in RAM ({cachedKeys.length})</p>
+                                </div>
                             </div>
 
                             {cachedKeys.length === 0 ? (
-                                <div className="cache-empty-keys">
-                                    <p>📭 No keys are currently stored in cache.</p>
-                                    <span className="empty-subtext">
-                                        Cache entries expire after {ttl} seconds or are invalidated upon task creation, update, or deletion.
-                                    </span>
+                                <div className="saas-empty-state-compact">
+                                    <div className="empty-state-icon">
+                                        <Layers size={28} />
+                                    </div>
+                                    <h4>No active cache keys</h4>
+                                    <p>
+                                        Keys are populated on <code>GET /tasks</code> and invalidated on mutations.
+                                    </p>
                                 </div>
                             ) : (
-                                <div className="cache-key-list">
+                                <div className="saas-key-chip-list">
                                     {cachedKeys.map((key) => {
                                         const isCollection = key === "all_tasks";
                                         return (
-                                            <div key={key} className="cache-key-chip">
-                                                <span className={`chip-badge ${isCollection ? "badge-collection" : "badge-item"}`}>
-                                                    {isCollection ? "Collection" : "Single Task"}
+                                            <div key={key} className="saas-key-card-item">
+                                                <div className="key-item-left">
+                                                    <span className={`key-type-pill ${isCollection ? "collection" : "single"}`}>
+                                                        {isCollection ? "Collection" : "Task Item"}
+                                                    </span>
+                                                    <code className="key-code-string">{key}</code>
+                                                </div>
+                                                <span className="key-ttl-pill">
+                                                    {ttl}s TTL
                                                 </span>
-                                                <code className="chip-key">{key}</code>
                                             </div>
                                         );
                                     })}
@@ -247,4 +375,3 @@ function CacheMonitoring() {
 }
 
 export default CacheMonitoring;
-

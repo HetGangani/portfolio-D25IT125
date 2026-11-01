@@ -1,24 +1,28 @@
-function Toast({ message, type = "success", onClose }) {
+import { CheckCircle, AlertCircle, X } from "./Icons";
 
+function Toast({ message, type = "success", onClose }) {
     if (!message) {
         return null;
     }
 
-    return (
-        <div className={`toast toast-${type}`}>
+    const isSuccess = type === "success";
 
-            <span className="toast-message">
-                {message}
-            </span>
+    return (
+        <div className={`saas-toast-container ${isSuccess ? "toast-success" : "toast-error"}`} role="alert">
+            <div className="toast-icon">
+                {isSuccess ? <CheckCircle size={18} /> : <AlertCircle size={18} />}
+            </div>
+
+            <span className="toast-message-text">{message}</span>
 
             <button
                 type="button"
-                className="toast-close"
+                className="toast-close-btn"
                 onClick={onClose}
+                aria-label="Close notification"
             >
-                ×
+                <X size={15} />
             </button>
-
         </div>
     );
 }
